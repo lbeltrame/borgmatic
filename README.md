@@ -7,6 +7,10 @@ borgmatic is simple, configuration-driven backup software for servers and workst
 
 [Source code](https://projects.torsion.org/borgmatic-collective/borgmatic)
 
+# docker image tags
+
+Docker image tags represent postgres client version included in the image. The `latest` tag has the latest stable version
+
 # schedule
 
 This repository has scheduled build, so docker image updated weekly
