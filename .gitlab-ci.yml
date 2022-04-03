@@ -8,10 +8,16 @@ docker:
   services:
     - docker:dind
   image: jdrouet/docker-with-buildx:stable
+  parallel:
+    matrix:
+      - POSTGRES_VERSION:
+        - 12
+        - 13
+        - 14
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
     - docker buildx create --use
-    - docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --push -t $CI_REGISTRY_IMAGE .
+    - docker buildx build --build-arg POSTGRES_VERSION=$POSTGRES_VERSION --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --push -t $CI_REGISTRY_IMAGE .
   tags:
     - docker
