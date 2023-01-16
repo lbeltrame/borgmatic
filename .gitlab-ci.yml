@@ -2,12 +2,18 @@ stages:
   - test
   - release
 
+variables:
+  BORGMATIC_VERSION: 1.7.5
+  BORG_VERSION: 1.2.3
+
+# docker build --build-arg POSTGRES_VERSION=14 --build-arg BORG_VERSION=1.2.3 --build-arg BORGMATIC_VERSION=1.7.5 .
+
 version:
   stage: release
   only: ['main']
   services:
     - docker:dind
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/jdrouet/docker-with-buildx:stable
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/jdrouet/docker-with-buildx:latest
   parallel:
     matrix:
       - POSTGRES_VERSION:
@@ -19,7 +25,13 @@ version:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
     - docker buildx create --use
-    - docker buildx build --build-arg POSTGRES_VERSION=$POSTGRES_VERSION --platform linux/arm64/v8,linux/amd64 --push -t $CI_REGISTRY_IMAGE:$POSTGRES_VERSION -t registry.etke.cc/etke.cc/borgmatic:$POSTGRES_VERSION .
+    - docker buildx build \
+      --build-arg POSTGRES_VERSION=$POSTGRES_VERSION \
+      --build-arg BORGMATIC_VERSION=$BORGMATIC_VERSION \
+      --build-arg BORG_VERSION=$BORG_VERSION \
+      --platform linux/arm64/v8,linux/amd64 \
+      --push -t $CI_REGISTRY_IMAGE:$POSTGRES_VERSION-$BORG_VERSION-$BORGMATIC_VERSION \
+      -t registry.etke.cc/etke.cc/borgmatic:$POSTGRES_VERSION-$BORG_VERSION-$BORGMATIC_VERSION .
   tags:
     - docker
 
@@ -28,11 +40,17 @@ latest:
   only: ['main']
   services:
     - docker:dind
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/jdrouet/docker-with-buildx:stable
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/jdrouet/docker-with-buildx:latest
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
     - docker buildx create --use
-    - docker buildx build --build-arg POSTGRES_VERSION=$POSTGRES_VERSION --platform linux/arm64/v8,linux/amd64 --push -t $CI_REGISTRY_IMAGE -t registry.etke.cc/etke.cc/borgmatic .
+    - docker buildx build \
+      --build-arg POSTGRES_VERSION=$POSTGRES_VERSION \
+      --build-arg BORGMATIC_VERSION=$BORGMATIC_VERSION \
+      --build-arg BORG_VERSION=$BORG_VERSION \
+      --platform linux/arm64/v8,linux/amd64 \
+      --push -t $CI_REGISTRY_IMAGE \
+      -t registry.etke.cc/etke.cc/borgmatic .
   tags:
     - docker

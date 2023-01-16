@@ -9,8 +9,6 @@ borgmatic is simple, configuration-driven backup software for servers and workst
 
 # docker image tags
 
-Docker image tags represent postgres client version included in the image. The `latest` tag has the latest stable version
+Each tag follows the scheme: `<postgres version>-<borg version>-<borgmatic version>`, thus `15-1.2.3-1.7.5` means Postgres client v15, BorgBackup v1.2.3, Borgmatic v1.7.5
 
-# schedule
-
-This repository has scheduled build, so docker image updated weekly
+The `latest` tag has the latest stable postgres client version
