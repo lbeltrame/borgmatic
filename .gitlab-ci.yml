@@ -25,13 +25,7 @@ version:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
     - docker buildx create --use
-    - docker buildx build \
-      --build-arg POSTGRES_VERSION=$POSTGRES_VERSION \
-      --build-arg BORGMATIC_VERSION=$BORGMATIC_VERSION \
-      --build-arg BORG_VERSION=$BORG_VERSION \
-      --platform linux/arm64/v8,linux/amd64 \
-      --push -t $CI_REGISTRY_IMAGE:$POSTGRES_VERSION-$BORG_VERSION-$BORGMATIC_VERSION \
-      -t registry.etke.cc/etke.cc/borgmatic:$POSTGRES_VERSION-$BORG_VERSION-$BORGMATIC_VERSION .
+    - docker buildx build --build-arg POSTGRES_VERSION=$POSTGRES_VERSION --build-arg BORGMATIC_VERSION=$BORGMATIC_VERSION --build-arg BORG_VERSION=$BORG_VERSION --platform linux/arm64/v8,linux/amd64 --push -t $CI_REGISTRY_IMAGE:$POSTGRES_VERSION-$BORG_VERSION-$BORGMATIC_VERSION -t registry.etke.cc/etke.cc/borgmatic:$POSTGRES_VERSION-$BORG_VERSION-$BORGMATIC_VERSION .
   tags:
     - docker
 
@@ -45,12 +39,6 @@ latest:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
     - docker buildx create --use
-    - docker buildx build \
-      --build-arg POSTGRES_VERSION=$POSTGRES_VERSION \
-      --build-arg BORGMATIC_VERSION=$BORGMATIC_VERSION \
-      --build-arg BORG_VERSION=$BORG_VERSION \
-      --platform linux/arm64/v8,linux/amd64 \
-      --push -t $CI_REGISTRY_IMAGE \
-      -t registry.etke.cc/etke.cc/borgmatic .
+    - docker buildx build --build-arg POSTGRES_VERSION=$POSTGRES_VERSION --build-arg BORGMATIC_VERSION=$BORGMATIC_VERSION --build-arg BORG_VERSION=$BORG_VERSION --platform linux/arm64/v8,linux/amd64 --push -t $CI_REGISTRY_IMAGE -t registry.etke.cc/etke.cc/borgmatic .
   tags:
     - docker
