@@ -3,7 +3,7 @@ stages:
   - release
 
 variables:
-  BORGMATIC_VERSION: 1.7.8
+  BORGMATIC_VERSION: 1.7.9
   BORG_VERSION: 1.2.3
 
 version:
