@@ -4,7 +4,7 @@ stages:
 
 variables:
   BORGMATIC_VERSION: 1.8.2
-  BORG_VERSION: 1.2.4
+  BORG_VERSION: 1.2.5
 
 version:
   stage: release
