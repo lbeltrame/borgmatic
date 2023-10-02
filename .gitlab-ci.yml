@@ -4,7 +4,7 @@ stages:
 
 variables:
   BORGMATIC_VERSION: 1.8.2
-  BORG_VERSION: 1.2.5
+  BORG_VERSION: 1.2.6
 
 version:
   stage: release
@@ -19,7 +19,6 @@ version:
         - 13
         - 14
         - 15
-        - 16
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
