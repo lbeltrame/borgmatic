@@ -15,7 +15,6 @@ version:
   parallel:
     matrix:
       - POSTGRES_VERSION:
-        - 12
         - 13
         - 14
         - 15
