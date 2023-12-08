@@ -9,8 +9,8 @@ RUN apk add --no-cache python3 py3-packaging py3-setuptools libacl openssh postg
 		ln -s /bin/uname /usr/local/bin/uname && \
 		ln -s /bin/rm /usr/local/bin/rm && \
 		ln -s /bin/sh /usr/local/bin/sh && \
-		pip install --upgrade pip wheel pkgconfig && \
-		pip install borgbackup==${BORG_VERSION} borgmatic==${BORGMATIC_VERSION} && \
+		pip install --upgrade --break-system-packages pip wheel pkgconfig && \
+		pip install --break-system-packages borgbackup==${BORG_VERSION} borgmatic==${BORGMATIC_VERSION} && \
 		pip cache purge && \
 		apk del builddeps && \
 		rm -rf /var/cache/apk/* && \
