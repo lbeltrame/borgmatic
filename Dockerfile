@@ -5,7 +5,7 @@ ARG BORG_VERSION
 ARG BORGMATIC_VERSION
 
 RUN apk add --no-cache python3 py3-packaging py3-setuptools libacl openssh postgresql${POSTGRES_VERSION}-client socat && \
-		apk --no-cache add --virtual builddeps alpine-sdk linux-headers acl-dev py3-cffi py3-pip openssl-dev python3-dev && \
+		apk --no-cache add --virtual builddeps alpine-sdk linux-headers acl-dev py3-cffi py3-pip openssl-dev python3-dev lz4-dev zstd-dev xxhash-dev && \
 		ln -s /bin/uname /usr/local/bin/uname && \
 		ln -s /bin/rm /usr/local/bin/rm && \
 		ln -s /bin/sh /usr/local/bin/sh && \
