@@ -16,7 +16,19 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        postgres_version: [ "14", "15", "16" ]
+        version:
+          - postgres: '12'
+            alpine: '3.18'
+          - postgres: '13'
+            alpine: '3.19'
+          - postgres: '14'
+            alpine: '3.20'
+          - postgres: '15'
+            alpine: 'edge'
+          - postgres: '16'
+            alpine: 'edge'
+          - postgres: '17'
+            alpine: 'edge'
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -34,8 +46,8 @@ jobs:
             ghcr.io/${{ github.repository }}
             registry.etke.cc/${{ github.repository }}
           tags: |
-            type=raw,value=latest,enable=${{ matrix.postgres_version == '' }}
-            type=raw,value=${{ matrix.postgres_version }}-${{ env.borg_version }}-${{ env.borgmatic_version }},enable=${{ github.ref_name == 'main' }}
+            type=raw,value=latest,enable=${{ matrix.version.postgres == '' }}
+            type=raw,value=${{ matrix.version.postgres }}-${{ env.borg_version }}-${{ env.borgmatic_version }},enable=${{ github.ref_name == 'main' }}
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -44,7 +56,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            POSTGRES_VERSION=${{ matrix.postgres_version }}
+            ALPINE_VERSION=${{ matrix.version.alpine }}
+            POSTGRES_VERSION=${{ matrix.version.postgres }}
             BORGMATIC_VERSION=${{ env.borgmatic_version }}
             BORG_VERSION=${{ env.borg_version }}
   build-publish-latest:
@@ -76,6 +89,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            POSTGRES_VERSION=${{ matrix.postgres_version }}
+            ALPINE_VERSION=edge
+            POSTGRES_VERSION=
             BORGMATIC_VERSION=${{ env.borgmatic_version }}
             BORG_VERSION=${{ env.borg_version }}
